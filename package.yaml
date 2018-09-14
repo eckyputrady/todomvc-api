@@ -1,0 +1,71 @@
+name:                todomvc-api
+version:             0.1.0.0
+github:              "eckyputrady/todomvc-api"
+license:             BSD3
+author:              "Ecky Putrady"
+maintainer:          "eckyputrady@gmail.com"
+copyright:           "2018 Ecky Putrady"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/eckyputrady/todomvc-api#readme>
+
+dependencies:
+- base
+- classy-prelude
+- lens
+
+default-extensions:
+- OverloadedStrings
+- GeneralizedNewtypeDeriving
+- ConstraintKinds
+- FlexibleContexts
+- NoImplicitPrelude
+- AllowAmbiguousTypes
+- DataKinds
+- DeriveGeneric
+- DuplicateRecordFields
+- NoMonomorphismRestriction
+- TypeApplications
+- ScopedTypeVariables
+
+library:
+  source-dirs: src
+  dependencies:
+  - generic-lens
+  - aeson
+  - scotty
+  - wai
+  - http-types
+  - data-has
+
+executables:
+  todomvc-api-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - todomvc-api
+
+tests:
+  todomvc-api-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - todomvc-api
