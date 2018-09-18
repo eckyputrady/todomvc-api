@@ -23,6 +23,7 @@ dependencies:
 - base
 - classy-prelude
 - lens
+- generic-lens
 
 default-extensions:
 - OverloadedStrings
@@ -30,18 +31,15 @@ default-extensions:
 - ConstraintKinds
 - FlexibleContexts
 - NoImplicitPrelude
-- AllowAmbiguousTypes
 - DataKinds
 - DeriveGeneric
 - DuplicateRecordFields
-- NoMonomorphismRestriction
 - TypeApplications
 - ScopedTypeVariables
 
 library:
   source-dirs: src
   dependencies:
-  - generic-lens
   - aeson
   - scotty
   - wai

@@ -1,10 +1,8 @@
 module Todo.Types where
 
 import ClassyPrelude
-import Control.Lens
 import Data.Aeson
 import Data.Generics.Product
-import Data.Generics.Sum
 import GHC.Generics (Generic)
 
 data Todo = Todo

@@ -5,8 +5,6 @@ import Todo.Types
 import Control.Lens
 import Data.Has
 import Data.Generics.Product
-import Data.Generics.Sum
-import GHC.Generics (Generic)
 
 type Deps r m = (Has (TVar State) r, MonadReader r m, MonadIO m)
 
@@ -26,13 +24,14 @@ withTVar f = do
 addTodo :: Deps r m => CreateTodo -> m Todo
 addTodo createTodo = withTVar $ \tvar -> do
   state <- readTVar tvar
-  let newTodo = 
-        Todo  { id = state ^. field @"lastId"
+  let newId = 1 + state ^. field @"lastId"
+      newTodo = 
+        Todo  { id = newId
               , title = createTodo ^. field @"title"
               , completed = False
               }
       newState = 
-        State { lastId = 1 + (state ^. field @"lastId")
+        State { lastId = newId
               , todos = snoc (state ^. field @"todos") newTodo
               }
   writeTVar tvar newState

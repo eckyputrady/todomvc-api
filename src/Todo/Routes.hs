@@ -7,35 +7,28 @@ import Web.Scotty.Trans
 import Network.HTTP.Types.Status
 import Network.Wai
 import Todo.Types
+import qualified Todo.Service as S
 
-class Monad m => Service m where
-  addTodo :: CreateTodo -> m Todo
-  removeCompletedTodos :: m ()
-  getAllTodos :: m [Todo]
-  getTodo :: Int -> m (Maybe Todo)
-  updateTodo :: Todo -> m (Maybe Todo)
-  removeTodo :: Int -> m ()
-
-routes :: (Service m, MonadIO m) => ScottyT LText m ()
+routes :: S.Deps r m => ScottyT LText m ()
 routes = do
     
   post "/todos" $ do
     arg <- jsonData
-    result <- lift $ addTodo arg
+    result <- lift $ S.addTodo arg
     status status201
     json result
 
   get "/todos" $ do
-    result <- lift $ getAllTodos
+    result <- lift $ S.getAllTodos
     json result
 
   delete "/todos" $ do
-    lift $ removeCompletedTodos
+    lift $ S.removeCompletedTodos
     status status204
 
   get "/todos/:id" $ do
     todoId <- param "id"
-    mayResult <- lift $ getTodo todoId
+    mayResult <- lift $ S.getTodo todoId
     case mayResult of
       Nothing ->
         status status404
@@ -49,7 +42,7 @@ routes = do
                     , title = arg ^. field @"title"
                     , completed = arg ^. field @"completed"
                     }
-    mayResult <- lift $ updateTodo todo
+    mayResult <- lift $ S.updateTodo todo
     case mayResult of
       Nothing ->
         status status404
@@ -58,6 +51,6 @@ routes = do
 
   delete "/todos/:id" $ do
     todoId <- param "id"
-    lift $ removeTodo todoId
+    lift $ S.removeTodo todoId
     status status204
 
